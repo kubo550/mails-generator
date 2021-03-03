@@ -1,1 +1,1 @@
-# fake-mails-generator
+# Fake interia account generator
