@@ -1,0 +1,20 @@
+{
+  "name": "interia-acconts",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "start": "node ./dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "tslint": "5.12.1",
+    "typescript": "3.3.3"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "fs": "^0.0.1-security",
+    "puppeteer": "^8.0.0"
+  }
+}
