@@ -55,7 +55,6 @@ const getFakeMail = async (fakePerson) => {
         email: `${accountLogin}@interia.pl`,
         password: userData.password,
     };
-    console.log("inside", res);
     const submit = await page.$(".btn");
     await submit?.click();
     await page.waitForTimeout(4500);

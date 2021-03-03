@@ -79,8 +79,6 @@ const getFakeMail = async (fakePerson: FakePerson) => {
         password: userData.password,
     };
 
-    console.log("inside", res);
-
     const submit = await page.$(".btn");
     await submit?.click();
     await page.waitForTimeout(4500);
