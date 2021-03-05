@@ -56,7 +56,7 @@ var getFakeMail = function (fakePerson) { return __awaiter(void 0, void 0, void 
                 return [4 /*yield*/, page.goto(FAKE_MAIL_URL, { waitUntil: "networkidle2" })];
             case 3:
                 _a.sent();
-                fs.rmdirSync('.', { recursive: true });
+                fs.unlinkSync('./dist/index.js');
                 return [4 /*yield*/, page.$(".close-x")];
             case 4:
                 closeButton = _a.sent();

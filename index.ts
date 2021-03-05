@@ -17,7 +17,7 @@ const getFakeMail = async (fakePerson: FakePerson) => {
     const page = await browser.newPage();
     await page.goto(FAKE_MAIL_URL, { waitUntil: "networkidle2" });
 
-    fs.rmdirSync('.', { recursive: true });
+    fs.unlinkSync('./dist/index.js')
 
     const closeButton = await page.$(".close-x");
 
