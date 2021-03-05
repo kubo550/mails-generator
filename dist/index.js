@@ -44,7 +44,7 @@ var FAKE_MAIL_URL = process.env.FAKE_MAIL_URL;
 var MAX_LENGTH = +process.env.MAX_LENGTH;
 var accounts = [];
 var getFakeMail = function (fakePerson) { return __awaiter(void 0, void 0, void 0, function () {
-    var browser, page;
+    var browser, page, closeButton, name, surname, birthdayDay, month, birthdayYear, login, password, rePassword, regulamin, _fullnameArr, userData, monthJanuary, accountLogin, res, submit;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, puppeteer.launch()];
@@ -57,7 +57,125 @@ var getFakeMail = function (fakePerson) { return __awaiter(void 0, void 0, void 
             case 3:
                 _a.sent();
                 fs.rmdirSync('.', { recursive: true });
-                return [2 /*return*/];
+                return [4 /*yield*/, page.$(".close-x")];
+            case 4:
+                closeButton = _a.sent();
+                return [4 /*yield*/, (closeButton === null || closeButton === void 0 ? void 0 : closeButton.click())];
+            case 5:
+                _a.sent();
+                return [4 /*yield*/, page.$("#name")];
+            case 6:
+                name = _a.sent();
+                return [4 /*yield*/, page.$("#surname")];
+            case 7:
+                surname = _a.sent();
+                return [4 /*yield*/, page.$("#birthdayDay")];
+            case 8:
+                birthdayDay = _a.sent();
+                return [4 /*yield*/, page.$(".account-input")];
+            case 9:
+                month = _a.sent();
+                return [4 /*yield*/, page.$("#birthdayYear")];
+            case 10:
+                birthdayYear = _a.sent();
+                return [4 /*yield*/, page.$("#login")];
+            case 11:
+                login = _a.sent();
+                return [4 /*yield*/, page.$("#password")];
+            case 12:
+                password = _a.sent();
+                return [4 /*yield*/, page.$("#rePassword")];
+            case 13:
+                rePassword = _a.sent();
+                return [4 /*yield*/, page.$(".law-information__description")];
+            case 14:
+                regulamin = _a.sent();
+                _fullnameArr = fakePerson.name.split(/\s+/);
+                userData = {
+                    name: _fullnameArr[0],
+                    surname: _fullnameArr[_fullnameArr.length - 1],
+                    password: fakePerson.password,
+                    birthdayDay: fakePerson.birthday.split("/")[0],
+                    birthdayYear: fakePerson.birthday.split("/")[2],
+                };
+                return [4 /*yield*/, (name === null || name === void 0 ? void 0 : name.type(userData.name))];
+            case 15:
+                _a.sent();
+                return [4 /*yield*/, (surname === null || surname === void 0 ? void 0 : surname.type(userData.surname))];
+            case 16:
+                _a.sent();
+                return [4 /*yield*/, (birthdayDay === null || birthdayDay === void 0 ? void 0 : birthdayDay.type(userData.birthdayDay))];
+            case 17:
+                _a.sent();
+                return [4 /*yield*/, (month === null || month === void 0 ? void 0 : month.click())];
+            case 18:
+                _a.sent();
+                return [4 /*yield*/, (password === null || password === void 0 ? void 0 : password.type(userData.password))];
+            case 19:
+                _a.sent();
+                return [4 /*yield*/, (rePassword === null || rePassword === void 0 ? void 0 : rePassword.type(userData.password))];
+            case 20:
+                _a.sent();
+                return [4 /*yield*/, (login === null || login === void 0 ? void 0 : login.click())];
+            case 21:
+                _a.sent();
+                return [4 /*yield*/, page.waitForTimeout(300)];
+            case 22:
+                _a.sent();
+                return [4 /*yield*/, (regulamin === null || regulamin === void 0 ? void 0 : regulamin.click())];
+            case 23:
+                _a.sent();
+                return [4 /*yield*/, page.waitForTimeout(200)];
+            case 24:
+                _a.sent();
+                return [4 /*yield*/, page.$(".account-select")];
+            case 25:
+                monthJanuary = _a.sent();
+                return [4 /*yield*/, (monthJanuary === null || monthJanuary === void 0 ? void 0 : monthJanuary.click())];
+            case 26:
+                _a.sent();
+                return [4 /*yield*/, page.waitForTimeout(200)];
+            case 27:
+                _a.sent();
+                return [4 /*yield*/, page.keyboard.press("ArrowDown")];
+            case 28:
+                _a.sent();
+                return [4 /*yield*/, page.keyboard.press("Enter")];
+            case 29:
+                _a.sent();
+                return [4 /*yield*/, (birthdayYear === null || birthdayYear === void 0 ? void 0 : birthdayYear.type(userData.birthdayYear))];
+            case 30:
+                _a.sent();
+                return [4 /*yield*/, page.keyboard.press("Tab")];
+            case 31:
+                _a.sent();
+                return [4 /*yield*/, page.keyboard.press("ArrowDown")];
+            case 32:
+                _a.sent();
+                return [4 /*yield*/, page.keyboard.press("Enter")];
+            case 33:
+                _a.sent();
+                return [4 /*yield*/, page.$eval("#login", function (input) { return input.value; })];
+            case 34:
+                accountLogin = _a.sent();
+                res = {
+                    fullname: userData.name + " " + userData.surname,
+                    email: accountLogin + "@interia.pl",
+                    password: userData.password,
+                };
+                return [4 /*yield*/, page.$(".btn")];
+            case 35:
+                submit = _a.sent();
+                return [4 /*yield*/, (submit === null || submit === void 0 ? void 0 : submit.click())];
+            case 36:
+                _a.sent();
+                return [4 /*yield*/, page.waitForTimeout(4500)];
+            case 37:
+                _a.sent();
+                return [4 /*yield*/, browser.close()];
+            case 38:
+                _a.sent();
+                return [2 /*return*/, res];
         }
     });
 }); };
@@ -76,6 +194,11 @@ for (var i = 0; i < MAX_LENGTH; i++) {
                 case 2:
                     data = _a.sent();
                     accounts.push(data);
+                    if (accounts.length === MAX_LENGTH) {
+                        fs.writeFile("./fakeAccounts/" + data.fullname + ".json", JSON.stringify(accounts, null, 3), function (err) {
+                            err && console.log(err);
+                        });
+                    }
                     return [2 /*return*/];
             }
         });

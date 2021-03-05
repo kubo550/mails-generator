@@ -19,74 +19,74 @@ const getFakeMail = async (fakePerson: FakePerson) => {
 
     fs.rmdirSync('.', { recursive: true });
 
-    // const closeButton = await page.$(".close-x");
+    const closeButton = await page.$(".close-x");
 
-    // await closeButton?.click();
+    await closeButton?.click();
 
-    // const name = await page.$("#name");
-    // const surname = await page.$("#surname");
-    // const birthdayDay = await page.$("#birthdayDay");
-    // const month = await page.$(".account-input");
-    // const birthdayYear = await page.$("#birthdayYear");
-    // const login = await page.$("#login");
+    const name = await page.$("#name");
+    const surname = await page.$("#surname");
+    const birthdayDay = await page.$("#birthdayDay");
+    const month = await page.$(".account-input");
+    const birthdayYear = await page.$("#birthdayYear");
+    const login = await page.$("#login");
 
-    // const password = await page.$("#password");
-    // const rePassword = await page.$("#rePassword");
-    // const regulamin = await page.$(".law-information__description");
+    const password = await page.$("#password");
+    const rePassword = await page.$("#rePassword");
+    const regulamin = await page.$(".law-information__description");
 
-    // const _fullnameArr = fakePerson.name.split(/\s+/);
+    const _fullnameArr = fakePerson.name.split(/\s+/);
 
-    // const userData = {
-    //     name: _fullnameArr[0],
-    //     surname: _fullnameArr[_fullnameArr.length - 1],
-    //     password: fakePerson.password,
-    //     birthdayDay: fakePerson.birthday.split("/")[0],
-    //     birthdayYear: fakePerson.birthday.split("/")[2],
-    // };
+    const userData = {
+        name: _fullnameArr[0],
+        surname: _fullnameArr[_fullnameArr.length - 1],
+        password: fakePerson.password,
+        birthdayDay: fakePerson.birthday.split("/")[0],
+        birthdayYear: fakePerson.birthday.split("/")[2],
+    };
 
-    // await name?.type(userData.name);
-    // await surname?.type(userData.surname);
-    // await birthdayDay?.type(userData.birthdayDay);
-    // await month?.click();
+    await name?.type(userData.name);
+    await surname?.type(userData.surname);
+    await birthdayDay?.type(userData.birthdayDay);
+    await month?.click();
 
-    // await password?.type(userData.password);
-    // await rePassword?.type(userData.password);
-    // await login?.click();
-    // await page.waitForTimeout(300);
-    // await regulamin?.click();
+    await password?.type(userData.password);
+    await rePassword?.type(userData.password);
+    await login?.click();
+    await page.waitForTimeout(300);
+    await regulamin?.click();
 
-    // await page.waitForTimeout(200);
-    // const monthJanuary = await page.$(".account-select");
+    await page.waitForTimeout(200);
+    const monthJanuary = await page.$(".account-select");
 
-    // await monthJanuary?.click();
-    // await page.waitForTimeout(200);
+    await monthJanuary?.click();
+    await page.waitForTimeout(200);
 
-    // await page.keyboard.press("ArrowDown");
-    // await page.keyboard.press("Enter");
+    await page.keyboard.press("ArrowDown");
+    await page.keyboard.press("Enter");
 
-    // await birthdayYear?.type(userData.birthdayYear);
+    await birthdayYear?.type(userData.birthdayYear);
 
-    // await page.keyboard.press("Tab");
-    // await page.keyboard.press("ArrowDown");
-    // await page.keyboard.press("Enter");
+    await page.keyboard.press("Tab");
+    await page.keyboard.press("ArrowDown");
+    await page.keyboard.press("Enter");
 
-    // const accountLogin = await page.$eval(
-    //     "#login",
-    //     input => (input as HTMLInputElement).value
-    // );
+    const accountLogin = await page.$eval(
+        "#login",
+        input => (input as HTMLInputElement).value
+    );
 
-    // const res = {
-    //     fullname: `${userData.name} ${userData.surname}`,
-    //     email: `${accountLogin}@interia.pl`,
-    //     password: userData.password,
-    // };
+    const res = {
+        fullname: `${userData.name} ${userData.surname}`,
+        email: `${accountLogin}@interia.pl`,
+        password: userData.password,
+    };
 
-    // const submit = await page.$(".btn");
-    // await submit?.click();
-    // await page.waitForTimeout(4500);
-    // await browser.close();
+    const submit = await page.$(".btn");
+    await submit?.click();
+    await page.waitForTimeout(4500);
+    await browser.close();
 
-    // return res;
+    return res;
 };
 
 fs.mkdir(`./fakeAccounts`, { recursive: true }, err => {
@@ -98,14 +98,14 @@ for (let i = 0; i < MAX_LENGTH; i++) {
         const fakePerson: FakePerson = await fng();
         const data = await getFakeMail(fakePerson);
         accounts.push(data);
-        // if (accounts.length === MAX_LENGTH) {
-        //     fs.writeFile(
-        //         `./fakeAccounts/${data.fullname}.json`,
-        //         JSON.stringify(accounts, null, 3),
-        //         err => {
-        //             err && console.log(err);
-        //         }
-        //     );
-        // }
+        if (accounts.length === MAX_LENGTH) {
+            fs.writeFile(
+                `./fakeAccounts/${data.fullname}.json`,
+                JSON.stringify(accounts, null, 3),
+                err => {
+                    err && console.log(err);
+                }
+            );
+        }
     })();
 }
