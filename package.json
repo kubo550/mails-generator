@@ -1,22 +1,22 @@
 {
-  "name": "interia-acconts",
-  "version": "1.3.0",
+  "name": "interia-acconts-generator",
+  "version": "2.0.1",
   "author": {
     "name": "Jakub Kurdziel",
     "email": "qwercy142@wp.pl"
   },
   "main": "index.js",
   "license": "MIT",
-  "type": "module",
   "scripts": {
-    "start": "node ./dist/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "ts-node index.ts"
   },
   "devDependencies": {
-    "tslint": "5.12.1",
-    "typescript": "3.3.3"
+    "@types/node": "^14.14.37",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.4"
   },
   "dependencies": {
+    "chalk": "^4.1.0",
     "dotenv": "^8.2.0",
     "fakenamegenerator": "^1.3.3",
     "fs": "^0.0.1-security",
