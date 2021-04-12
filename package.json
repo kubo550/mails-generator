@@ -1,12 +1,20 @@
 {
   "name": "interia-acconts-generator",
-  "version": "2.0.1",
-  "author": {
-    "name": "Jakub Kurdziel",
-    "email": "qwercy142@wp.pl"
-  },
+  "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "author": {
+    "name": "Jakub Kurdziel",
+    "email": "qwercy142@gmail.com"
+  },
+  "keywords": [
+    "emails",
+    "accounts",
+    "generator",
+    "bot",
+    "typescript"
+  ],
+  "homepage": "https://github.com/kubo550/mails-generator",
   "scripts": {
     "start": "ts-node index.ts"
   },
