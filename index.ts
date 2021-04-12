@@ -1,19 +1,19 @@
 import puppeteer from "puppeteer";
 import dotenv from "dotenv";
 import chalk from "chalk";
+import fs from "fs"
 // @ts-ignore
 import fng from "fakenamegenerator";
-
 import { Person } from "./types";
 
 dotenv.config();
-
 
 const password = process.env.PASSWORD!;
 const timeoutMS = Number(process.env.TIMEOUT_MS!);
 
 const URL = "https://konto-pocztowe.interia.pl/#/nowe-konto/darmowe";
 const DOMAIN = "@interia.pl";
+const MIN_RESPONSE_TIME_MS = 3500;
 let trials = 0;
 let created = 0;
 
@@ -105,15 +105,17 @@ const createAccount = async (
     const login = loginEl?._remoteObject.value as string;
     await page.waitForTimeout(timeoutMS);
 
-    // const checkbox = await page.$('.checkbox-label')
-    // await checkbox?.click()
+    const checkbox = await page.$('.checkbox-label')
+    await checkbox?.click()
     await page.waitForTimeout(timeoutMS);
 
     const errors = await page.$(".account-input__error");
 
+    await page.waitForTimeout(timeoutMS * 2);
     const registerBtn = await page.$(".btn");
     await registerBtn?.click();
-    await page.waitForTimeout(timeoutMS * 2);
+    await page.waitForTimeout(MIN_RESPONSE_TIME_MS);
+    // const url = page.url()
 
     await browser.close();
 
@@ -122,29 +124,42 @@ const createAccount = async (
     return [mail, completed];
 };
 
-const interval = async (): Promise<void> => {
-    const person: Person = await fng();
-
-    const [mail, completed] = await createAccount(person, password);
-    trials++;
-    if (completed) {
-        created += 1;
-    }
-
+const addToDb = (mail: string, pass: string) => {
+    fs.appendFile('accounts.db', `${mail}, ${pass}\n`, err => {
+        if (err) {
+            throw Error(err.message)
+        }
+    })
+}
+const log = (mail: string, completed: boolean) => {
     console.log(
         chalk.blue(mail),
         chalk.magenta(password),
-        chalk[completed ? "green" : "red"](completed),
+        chalk[completed ? "green" : "red"](completed ? "created" : "Failed"),
         `${chalk.greenBright(trials)}/${chalk.cyanBright(trials)}`
     );
+}
 
-    await interval();
+const createNext = async (): Promise<void> => {
+    const person: Person = await fng();
+    const [mail, completed] = await createAccount(person, password);
+
+    trials++;
+
+    if (completed) {
+        created++;
+        addToDb(mail, password);
+    }
+
+    log(mail, completed)
+
+    await createNext();
 };
 
 (async () => {
     console.log(chalk.cyanBright("Start creating..."));
     try {
-        await interval();
+        await createNext();
     } catch (err) {
         console.log(
             chalk.yellowBright`Something went really wrong!`,
